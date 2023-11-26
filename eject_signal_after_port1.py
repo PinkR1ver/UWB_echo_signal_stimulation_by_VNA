@@ -15,7 +15,7 @@ if __name__ == '__main__':
     file_dir = os.path.dirname(__file__)
     data_path = os.path.join(file_dir, 'data', 'exp01')
     
-    eject_signal_df = pd.read_csv(os.path.join(data_path, '10cm', 'TOUCHSTONE.S2P'), skiprows=5, delimiter='	', names=['Frequency', 'S11_amp', 'S11_phase', 'S21_amp', 'S21_phase', 'S12_amp', 'S12_phase', 'S22_amp', 'S22_phase'])
+    eject_signal_df = pd.read_csv(os.path.join(data_path, 'initial', 'TOUCHSTONE.S2P'), skiprows=5, delimiter='	', names=['Frequency', 'S11_amp', 'S11_phase', 'S21_amp', 'S21_phase', 'S12_amp', 'S12_phase', 'S22_amp', 'S22_phase'])
     
     duration = 1e-8 # Duration of the signal in seconds
     freqencies = eject_signal_df['Frequency'].to_numpy()
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         
     amp_adjust = amp_spectrum * amp_ref
     
-    t = np.linspace(0, 1e-8, int(1e5))
+    t = np.linspace(0, 1e-5, int(1e6))
     
     signal = np.zeros(len(t))
     

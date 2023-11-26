@@ -27,11 +27,11 @@ def gaussian_spcturm(f, fc, bw, bwr):
     # pi^2/a * fc^2 * bw^2 /4=-log(ref)
     a = -(math.pi * fc * bw) ** 2 / (4.0 * math.log(ref))
     
-    spectrum = np.exp(- (math.pi ** 2) * (2 * math.pi * f ** 2) / a)
+    spectrum = np.exp(- ((2 * np.pi * f) ** 2) / (4 * a))
 
         
-    spectrum_positive = np.exp(- (math.pi ** 2) * ((f - fc) ** 2) / a)
-    spectrum_negative = np.exp(- (math.pi ** 2) * ((f + fc) ** 2) / a)
+    spectrum_positive = np.exp(- ((2 * np.pi * f + 2 * np.pi * fc) ** 2) / (4 * a))
+    spectrum_negative = np.exp(- ((2 * np.pi * f - 2 * np.pi * fc) ** 2) / (4 * a))
     spectrum_modu = spectrum_positive + spectrum_negative
     
     return spectrum, spectrum_modu
@@ -132,8 +132,8 @@ phase_spectrum_sorted = phase_spectrum_mask[sorted_indices]
 
 
 
-# spectrum_saved = pd.DataFrame(list(zip(frequencies_sorted, amplitude_spectrum_sorted, phase_spectrum_sorted)), columns=['freq', 'amp', 'phase'])
-# pd.DataFrame(spectrum_saved).to_csv('./data/UWB_signal_gaussianPulse_freq_amp_pair.csv', index=False)
+spectrum_saved = pd.DataFrame(list(zip(frequencies_sorted, amplitude_spectrum_sorted, phase_spectrum_sorted)), columns=['freq', 'amp', 'phase'])
+pd.DataFrame(spectrum_saved).to_csv('./data/UWB_signal_gaussianPulse_freq_amp_pair.csv', index=False)
 
 
 plt.figure(figsize=(10, 6))
@@ -151,6 +151,9 @@ plt.plot(frequencies_sorted, amplitude_spectrum_sorted)
 plt.axvline(x=start_frequency, color='r', linestyle='--')
 plt.axvline(x=center_frequency, color='r', linestyle='--')
 plt.axvline(x=end_frequency, color='r', linestyle='--')
+plt.text(start_frequency, 0.5, 'start frequency', rotation=90)
+plt.text(center_frequency, 0.5, 'center frequency', rotation=90)
+plt.text(end_frequency, 0.5, 'end frequency', rotation=90)
 plt.title('Frequency Spectrum')
 plt.xlabel('Frequency')
 plt.ylabel('Amplitude')
@@ -175,10 +178,10 @@ plt.show()
 
 plt.figure(figsize=(5, 8))
 
-_, spectrum = gaussian_spcturm(frequencies_sorted, center_frequency, bandwidth, -6)
+_, spectrum = gaussian_spcturm(frequencies, center_frequency, bandwidth, -6)
 
 plt.subplot(3, 1, 1)
-plt.plot(frequencies_sorted, spectrum)
+plt.plot(frequencies, spectrum)
 plt.xlabel('Frequency')
 plt.ylabel('Magnitude')
 plt.title('Gaussian Impluse Mag Spectrum')
@@ -187,15 +190,21 @@ plt.ylim(0, 1.1)
 plt.axvline(x=start_frequency, color='r', linestyle='--')
 plt.axvline(x=center_frequency, color='r', linestyle='--')
 plt.axvline(x=end_frequency, color='r', linestyle='--')
+plt.text(start_frequency, 0.3, 'start frequency', rotation=90)
+plt.text(center_frequency, 0.3, 'center frequency', rotation=90)
+plt.text(end_frequency, 0.3, 'end frequency', rotation=90)
 plt.axhline(y=0.5, color='r', linestyle='--')
+plt.text(-6.4e9, 0.5, '50% Energy')
 
 
 
 base_path = os.path.dirname(__file__)
-eject_signal_df = pd.read_csv(os.path.join(base_path, 'data', 'exp01', '10cm', 'TOUCHSTONE.S2P'), skiprows=5, delimiter='	', names=['Frequency', 'S11_amp', 'S11_phase', 'S21_amp', 'S21_phase', 'S12_amp', 'S12_phase', 'S22_amp', 'S22_phase'])
+eject_signal_df = pd.read_csv(os.path.join(base_path, 'data', 'exp02', 'initial.S2P'), skiprows=5, delimiter='	', names=['Frequency', 'S11_amp', 'S11_phase', 'S21_amp', 'S21_phase', 'S12_amp', 'S12_phase', 'S22_amp', 'S22_phase'])
 
 frequencies = eject_signal_df['Frequency'].values
 phase_spectrum = [0] * len(frequencies)
+
+print(frequencies)
 
 plt.subplot(3, 1, 2)
 plt.plot(frequencies, phase_spectrum)
@@ -229,6 +238,7 @@ plt.ylabel('Amplitude')
 plt.title('Gaussian Pulse')
 plt.tight_layout()
 plt.savefig(os.path.join(base_path, 'fig', 'eject_gaussian_pulse.png'))
+# plt.show()
 
 spectrum_saved = pd.DataFrame(list(zip(frequencies, spectrum, phase_spectrum)), columns=['freq', 'amp', 'phase'])
 spectrum_saved.to_csv(os.path.join(base_path, 'ref', 'eject_gaussian_pulse_freq_amp_pair.csv'), index=False)
