@@ -34,3 +34,9 @@ hold off;
 
 legend('show');
 
+% write a popmenu to select the np value
+
+popupmenu = uicontrol('Style', 'popupmenu', 'String', np, 'Position', [20 340 100 50], 'Callback', @plot_popup);
+
+
+
