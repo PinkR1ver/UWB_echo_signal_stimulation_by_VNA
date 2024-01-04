@@ -5,18 +5,17 @@ label = {'t', '05cm', '08cm', '100cm', '12cm', '16cm', '20cm', '24cm', '28cm', '
 file_path = './data/time_domain_signal.csv';
 signal = readmatrix(file_path);
 
+np = 15000;
+
 t = signal(:,1);
 fs = 1/(t(2)-t(1));
-
-fc = 7*1e7;
-[b, a] = butter(3, fc/(fs/2), 'low');
 
 figure();
 flag = 0;
 max_value = -inf;
 min_value = inf;
 
-for i = 2:5
+for i = 2:6
 
     if i == 4
         flag = 1;
@@ -25,19 +24,16 @@ for i = 2:5
     
     s = signal(:,i);
 
-    analytical = hilbert(s);
-    env = abs(s);
-
-    env = filtfilt(b, a, env);
+    env = envelope(s, np, 'peak');
     
     max_value = max(max_value, max(env));
     min_value = min(min_value, min(env));
     
 
     if flag
-        subplot(3, 1, i-2)
+        subplot(4, 1, i-2)
     else
-        subplot(3, 1, i-1)
+        subplot(4, 1, i-1)
     end
     
     plot(t, env, 'LineWidth', 2);
@@ -47,7 +43,7 @@ for i = 2:5
     
 end
 
-for i = 1:3
-    subplot(3, 1, i);
+for i = 1:4
+    subplot(4, 1, i);
     ylim([0.9 * min_value, 1.1 * max_value]);
 end
