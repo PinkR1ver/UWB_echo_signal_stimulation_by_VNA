@@ -15,7 +15,7 @@ figure;
 
 colors = jet(length(np)); % Create a colormap with as many colors as there are elements in np
 
-hLine1 = plot(t, signal, 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410], 'DisplayName', 'Signal');
+hLine = plot(t, signal, 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410], 'DisplayName', 'Signal');
 hold on;
 
 hLineEnv = cell(length(np), 1);
@@ -33,10 +33,27 @@ end
 hold off;
 
 legend('show');
+xlabel('Time (s)');
+ylabel('Magnitude');
+title('Envelope, peak method, different np samples')
 
 % write a popmenu to select the np value
 
-popupmenu = uicontrol('Style', 'popupmenu', 'String', np, 'Position', [20 340 100 50], 'Callback', @plot_popup);
+popupmenu = uicontrol('Style', 'popupmenu', 'String', np, 'Position', [20 340 100 50], 'Callback', @(src, event) updatePlot(src, event, hLine, hLineEnv));
+
+function updatePlot(source, ~, hLine, hLineEnv)
+
+    selectedCurve = get(source, 'Value');
+
+    set(hLine, 'Visible', 'on');
+    for i = 1:length(hLineEnv)
+        if i ~= selectedCurve
+            set(hLineEnv{i}, 'Visible', 'off');
+        else
+            set(hLineEnv{i}, 'Visible', 'on');
+        end
+    end
+end
 
 
 
