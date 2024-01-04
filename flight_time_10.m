@@ -12,6 +12,7 @@ np = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000,
 
 
 figure;
+set(0, 'DefaultAxesFontSize', 14);
 
 colors = jet(length(np)); % Create a colormap with as many colors as there are elements in np
 
@@ -37,6 +38,8 @@ xlabel('Time (s)');
 ylabel('Magnitude');
 title('Envelope, peak method, different np samples')
 
+np{end + 1} = 'all';
+
 % write a popmenu to select the np value
 
 popupmenu = uicontrol('Style', 'popupmenu', 'String', np, 'Position', [20 340 100 50], 'Callback', @(src, event) updatePlot(src, event, hLine, hLineEnv));
@@ -50,6 +53,12 @@ function updatePlot(source, ~, hLine, hLineEnv)
         if i ~= selectedCurve
             set(hLineEnv{i}, 'Visible', 'off');
         else
+            set(hLineEnv{i}, 'Visible', 'on');
+        end
+    end
+
+    if selectedCurve == length(hLineEnv) + 1
+        for i = 1:length(hLineEnv)
             set(hLineEnv{i}, 'Visible', 'on');
         end
     end

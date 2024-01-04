@@ -5,12 +5,13 @@ label = {'t', '05cm', '08cm', '100cm', '12cm', '16cm', '20cm', '24cm', '28cm', '
 file_path = './data/time_domain_signal.csv';
 signal = readmatrix(file_path);
 
-np = 15000;
+np = 20000;
 
 t = signal(:,1);
 fs = 1/(t(2)-t(1));
 
 figure();
+set(0, 'DefaultAxesFontSize', 14);
 flag = 0;
 max_value = -inf;
 min_value = inf;

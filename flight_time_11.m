@@ -11,6 +11,7 @@ fs = 1/(t(2)-t(1));
 signal = signal(:,2);
 
 figure;
+set(0, 'DefaultAxesFontSize', 14);
 
 colors = jet(length(fc));
 

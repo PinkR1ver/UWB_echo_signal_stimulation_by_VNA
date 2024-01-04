@@ -16,7 +16,7 @@ flag = 0;
 max_value = -inf;
 min_value = inf;
 
-for i = 2:5
+for i = 2:length(label)
 
     if i == 4
         flag = 1;
@@ -35,9 +35,9 @@ for i = 2:5
     
 
     if flag
-        subplot(3, 1, i-2)
+        subplot(length(label) - 2, 1, i-2)
     else
-        subplot(3, 1, i-1)
+        subplot(length(label) - 2, 1, i-1)
     end
     
     plot(t, env, 'LineWidth', 2);
@@ -47,7 +47,7 @@ for i = 2:5
     
 end
 
-for i = 1:3
-    subplot(3, 1, i);
+for i = 1:length(label) - 2
+    subplot(length(label) - 2, 1, i);
     ylim([0.9 * min_value, 1.1 * max_value]);
 end
