@@ -9,7 +9,7 @@ from scipy.io import savemat
 def logmag2liner(x):
     return 10 ** (x/20)
 
-freq_range = [7990, 9400]
+freq_range = [0, 10000]
 
 
 if __name__ == '__main__':
@@ -92,8 +92,8 @@ if __name__ == '__main__':
     
     plt.tight_layout()
     plt.xlabel('Time (s)')
-    plt.savefig(os.path.join(base_path, 'fig', 'time_domain_signal_5.png'))
+    plt.savefig(os.path.join(base_path, 'fig', 'time_domain_signal_6.png'))
     
     
     df = pd.DataFrame(signal_dict)
-    df.to_csv(os.path.join(base_path, 'data', 'exp06', 'time_domain_signal.csv'), index=False)
+    df.to_csv(os.path.join(base_path, 'data', 'exp06', 'time_domain_signal_all.csv'), index=False)

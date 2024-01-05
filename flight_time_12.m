@@ -8,13 +8,19 @@ signal = readmatrix(file_path);
 t = signal(:,1);
 fs = 1/(t(2)-t(1));
 
-fc = 7*1e7;
+fc = 2*1e7;
 [b, a] = butter(3, fc/(fs/2), 'low');
 
 figure();
+set(0, 'DefaultAxesFontSize', 14);
+
 flag = 0;
 max_value = -inf;
 min_value = inf;
+
+group_size = 4;
+
+j = 1;
 
 for i = 2:length(label)
 
@@ -33,21 +39,26 @@ for i = 2:length(label)
     max_value = max(max_value, max(env));
     min_value = min(min_value, min(env));
     
-
-    if flag
-        subplot(length(label) - 2, 1, i-2)
-    else
-        subplot(length(label) - 2, 1, i-1)
-    end
+    subplot(4, 1, j);
     
     plot(t, env, 'LineWidth', 2);
     ylabel('Amplitude');
     xlabel('Time (s)');
     title(label{i})
-    
-end
 
-for i = 1:length(label) - 2
-    subplot(length(label) - 2, 1, i);
-    ylim([0.9 * min_value, 1.1 * max_value]);
+    if j == group_size
+
+        for k = 1:group_size
+            subplot(group_size, 1, k);
+            ylim([0.9 * min_value, 1.1 * max_value]);
+        end
+
+        max_value = -inf;
+        min_value = inf;
+           
+        j = 0;
+        figure();
+    end
+
+    j = j + 1;
 end

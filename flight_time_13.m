@@ -16,7 +16,11 @@ flag = 0;
 max_value = -inf;
 min_value = inf;
 
-for i = 2:6
+group_size = 4;
+
+j = 1;
+
+for i = 2:length(label)
 
     if i == 4
         flag = 1;
@@ -30,21 +34,26 @@ for i = 2:6
     max_value = max(max_value, max(env));
     min_value = min(min_value, min(env));
     
-
-    if flag
-        subplot(4, 1, i-2)
-    else
-        subplot(4, 1, i-1)
-    end
+    subplot(4, 1, j);
     
     plot(t, env, 'LineWidth', 2);
     ylabel('Amplitude');
     xlabel('Time (s)');
     title(label{i})
-    
-end
 
-for i = 1:4
-    subplot(4, 1, i);
-    ylim([0.9 * min_value, 1.1 * max_value]);
+    if j == group_size
+
+        for k = 1:group_size
+            subplot(group_size, 1, k);
+            ylim([0.9 * min_value, 1.1 * max_value]);
+        end
+
+        max_value = -inf;
+        min_value = inf;
+           
+        j = 0;
+        figure();
+    end
+
+    j = j + 1;
 end
