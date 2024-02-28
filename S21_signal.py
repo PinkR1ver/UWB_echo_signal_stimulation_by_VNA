@@ -19,7 +19,7 @@ if __name__ == '__main__':
     start_index = 3161
     signal_df = pd.DataFrame()
     
-    t = np.linspace(0, 1e-9, int(1e5))
+    t = np.linspace(0, 1e-6, int(1e5))
     labels = []
     
     signal_df['t'] = t
@@ -53,12 +53,13 @@ if __name__ == '__main__':
                 # make mc_signal as a column to signal_df
                 signal_df['MC'] = mc_signal
                 
+                # plt.figure(figsize=(10, 5))
                 # plt.plot(t, mc_signal, label='MC')
                 # plt.xlabel('Time(s)')
                 # plt.ylabel('Magnitude')
                 # plt.title('MC Signal')
                 # plt.savefig(os.path.join(fig_path, 'MC_Signal.png'))
-                # plt.close()
+                # plt.show()
                 
                 print('MC Signal Compute Done')
 
@@ -98,10 +99,11 @@ if __name__ == '__main__':
                 signal_df[label] = signal
 
                 # plt.plot(t, signal, label=label)
+                # plt.plot(t, mc_signal, label='MC')
                 # plt.xlabel('Time(s)')
                 # plt.ylabel('Magnitude')
                 # plt.title('Signal')
                 # plt.savefig(os.path.join(fig_path, f'Signal_{label}cm.png'))
-                # plt.close()
+                # plt.show()
                 
     signal_df.to_excel(os.path.join(signal_path, 'signal.xlsx'), index=False)

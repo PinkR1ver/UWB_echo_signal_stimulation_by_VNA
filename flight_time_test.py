@@ -9,23 +9,21 @@ if __name__ == '__main__':
     
     base_path = os.path.dirname(__file__)
     signal_path = os.path.join(base_path, 'signal', 'signal.xlsx')
-    signal_df = pd.read_excel(signal_path)
+    peak_path = os.path.join(base_path, 'signal', 'two_peaks_manual_record.csv')
     
-    mc_signal = signal_df['MC'].values
+    signal_df = pd.read_excel(signal_path)
     t = signal_df['t'].values
     
-    for i in range(3, len(signal_df.columns)):
+    peak = pd.read_csv(peak_path)
+    
+    distance_df = pd.DataFrame()
+    
+    for i in range(len(peak.columns)):
         
-        signal = signal_df.iloc[:, i].values
-        signal = signal - mc_signal
+        peaks = peak.iloc[:, i].values
+        t_diff = t[peak.iloc[1, i]] - t[peak.iloc[0, i]]
+        distance = t_diff * 3e8 / 2 * 100
         
-        # find the peak of the signal and plot out
-        peaks, _ = scipy.signal.find_peaks(signal)
-        print(peaks)
-        plt.plot(t, signal)
-        plt.plot(t[peaks], signal[peaks], "x")
-        plt.xlabel('Time(s)')
-        plt.ylabel('Magnitude')
-        plt.title('Signal')
-        plt.show()
+        distance_df[peak.columns[i]] = [peak.columns[i], distance]
         
+    print(distance_df)

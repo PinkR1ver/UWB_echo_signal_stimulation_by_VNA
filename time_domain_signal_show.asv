@@ -1,0 +1,12 @@
+clear all;clc;close all;
+
+file_path = './signal/signal.xlsx';
+signal = readmatrix(file_path);
+
+signal = signal(2:end,:); % delete first row
+t = signal(:, 1); % get t
+mc_signal = signal(:,2); % get mutual coupling signal
+
+signal = signal(:, 3:end);
+
+dis = {5, 8, 12, 16, 20, 24, 28, 32, 36, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90};
