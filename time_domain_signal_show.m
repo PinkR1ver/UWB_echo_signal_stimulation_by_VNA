@@ -41,7 +41,13 @@ dis{end+1} = 'all';
 
 popupmenu1 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [20, 20, 100, 50], 'Callback', @(src, event) updatePlot1(src, event, hLine, hLineEnv));
 popupmenu2 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
+
+dis{end} = 'MC';
 popupmenu3 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [220, 20, 100, 50], 'Callback', @(src, event) updatePlot3(src, event, hLine, hLineEnv));
+
+% make a button to delete all signal a mc_signal
+
+button = uicontrol('Style', 'pushbutton', 'String', 'Delete Background', 'Position', [320, 20, 100, 50], 'Callback', @(src, event) deleteBackgroundNoise(src, event, hLine, hLineEnv));
 
 function updatePlot1(source, ~, hLine, hLineEnv)
 
@@ -68,8 +74,6 @@ function updatePlot2(source, ~, hLine, hLineEnv)
 
     selectedCurve = get(source, 'Value');
 
-    set(hLine, 'Visible', 'on');
-
     for i = 1:length(hLineEnv)
         if i == selectedCurve
             set(hLineEnv{i}, 'Visible', 'on');
@@ -88,4 +92,40 @@ function updatePlot3(source, ~, hLine, hLineEnv)
             set(hLineEnv{i}, 'Visible', 'off');
         end
     end
+
+    if selectedCurve == length(hLineEnv) + 1
+        set(hLine, 'Visible', 'off');
+    end
+end
+
+
+function deleteBackgroundNoise(~, ~, hLine, hLineEnv)
+
+    persistent flag;
+
+    if isempty(flag)
+        flag = 1;
+    end
+
+    if flag
+
+        % delete signal a hLine
+        for i = 1:length(hLineEnv)
+            set(hLineEnv{i}, 'YData', hLineEnv{i}.YData - hLine.YData)
+        end
+
+        flag = 0;
+
+    else
+
+        % delete signal a hLine
+        for i = 1:length(hLineEnv)
+            set(hLineEnv{i}, 'YData', hLineEnv{i}.YData + hLine.YData)
+        end
+
+        flag = 1;
+
+    end
+
+
 end
