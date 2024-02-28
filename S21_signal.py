@@ -20,6 +20,7 @@ if __name__ == '__main__':
     signal_df = pd.DataFrame()
     
     t = np.linspace(0, 4 * 1e-8, int(1e5))
+    np.savetxt(os.path.join(signal_path, 't.txt'), t)
     labels = []
     
     signal_df['t'] = t
@@ -49,7 +50,7 @@ if __name__ == '__main__':
                     count += 1
                     
                 mc_signal = mc_signal / count
-                # np.savetxt(os.path.join(signal_path, 'MC.txt'), mc_signal)
+                np.savetxt(os.path.join(signal_path, 'MC.txt'), mc_signal)
                 # make mc_signal as a column to signal_df
                 signal_df['MC'] = mc_signal
                 
@@ -95,7 +96,7 @@ if __name__ == '__main__':
                     
                 signal = signal / count
 
-                # np.savetxt(os.path.join(signal_path, f'{label}.txt'), signal)
+                np.savetxt(os.path.join(signal_path, f'{label}.txt'), signal)
                 signal_df[label] = signal
 
                 # plt.plot(t, signal, label=label)
