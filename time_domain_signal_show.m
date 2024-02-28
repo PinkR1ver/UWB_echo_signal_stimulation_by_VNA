@@ -41,6 +41,7 @@ dis{end+1} = 'all';
 
 popupmenu1 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [20, 20, 100, 50], 'Callback', @(src, event) updatePlot1(src, event, hLine, hLineEnv));
 popupmenu2 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
+popupmenu3 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [220, 20, 100, 50], 'Callback', @(src, event) updatePlot3(src, event, hLine, hLineEnv));
 
 function updatePlot1(source, ~, hLine, hLineEnv)
 
@@ -72,6 +73,19 @@ function updatePlot2(source, ~, hLine, hLineEnv)
     for i = 1:length(hLineEnv)
         if i == selectedCurve
             set(hLineEnv{i}, 'Visible', 'on');
+        end
+    end
+end
+
+function updatePlot3(source, ~, hLine, hLineEnv)
+
+    selectedCurve = get(source, 'Value');
+
+    set(hLine, 'Visible', 'on');
+
+    for i = 1:length(hLineEnv)
+        if i == selectedCurve
+            set(hLineEnv{i}, 'Visible', 'off');
         end
     end
 end

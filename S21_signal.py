@@ -19,7 +19,7 @@ if __name__ == '__main__':
     start_index = 3161
     signal_df = pd.DataFrame()
     
-    t = np.linspace(0, 1e-6, int(1e5))
+    t = np.linspace(0, 4 * 1e-8, int(1e5))
     labels = []
     
     signal_df['t'] = t
