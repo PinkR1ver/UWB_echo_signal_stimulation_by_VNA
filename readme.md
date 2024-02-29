@@ -45,4 +45,5 @@ What we do:
 
 Range detection performance:
 ![range detection](./range_detection/fig/range_detection_performance.jpeg)
+
 offset: 1.15%
