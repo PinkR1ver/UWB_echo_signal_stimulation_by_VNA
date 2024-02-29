@@ -55,7 +55,7 @@ if __name__ == '__main__':
     
     for i in range(len(peaks_list)):
         print(f'{soi_list[i].split('.')[0]} cm: {(peaks_list[i] - t0) * 3e8 / 2 * 100:.2f} cm')
-        offset = (int(soi_list[i].split('.')[0]) - (peaks_list[i] - t0) * 3e8 / 2 * 100) / int(soi_list[i].split('.')[0])
+        offset = abs(int(soi_list[i].split('.')[0]) - (peaks_list[i] - t0) * 3e8 / 2 * 100) / int(soi_list[i].split('.')[0])
         offset_list.append(offset)
         
     print(f'Offset: {(np.mean(offset_list) * 100):.2f}%')
