@@ -99,6 +99,6 @@ if __name__ == '__main__':
     
     # save t0
     t0_df = pd.DataFrame({'t0': [t0]})
-    t0_df.to_csv(os.path.join(base_path, 't0.csv'), index=False)
+    t0_df.to_csv(os.path.join(base_path, 'signal', 't0.csv'), index=False)
         
         
