@@ -40,9 +40,10 @@ grid minor;
 dis{end+1} = 'all';
 
 popupmenu1 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [20, 20, 100, 50], 'Callback', @(src, event) updatePlot1(src, event, hLine, hLineEnv));
-popupmenu2 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
 
 dis{end} = 'MC';
+
+popupmenu2 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
 popupmenu3 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [220, 20, 100, 50], 'Callback', @(src, event) updatePlot3(src, event, hLine, hLineEnv));
 
 % make a button to delete all signal a mc_signal
@@ -79,6 +80,11 @@ function updatePlot2(source, ~, hLine, hLineEnv)
             set(hLineEnv{i}, 'Visible', 'on');
         end
     end
+
+    if selectedCurve == length(hLineEnv) + 1
+        set(hLine, 'Visible', 'on');
+    end
+
 end
 
 function updatePlot3(source, ~, hLine, hLineEnv)
