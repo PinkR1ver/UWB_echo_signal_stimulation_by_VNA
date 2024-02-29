@@ -37,14 +37,29 @@ grid minor;
 
 % get a popupmenus to control which show, which not show
 
-dis{end+1} = 'all';
 
-popupmenu1 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [20, 20, 100, 50], 'Callback', @(src, event) updatePlot1(src, event, hLine, hLineEnv));
 
-dis{end} = 'MC';
+prompt = dis;
+for i = 1:length(dis)
+    prompt{i} = ['Show Signal in Dis = ', num2str(dis{i}), 'cm', ' and MC signal'];
+end
+prompt{end + 1} = 'Show All Signal';
 
-popupmenu2 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
-popupmenu3 = uicontrol('Style', 'popupmenu', 'String', dis, 'Position', [220, 20, 100, 50], 'Callback', @(src, event) updatePlot3(src, event, hLine, hLineEnv));
+popupmenu1 = uicontrol('Style', 'popupmenu', 'String', prompt, 'Position', [20, 20, 100, 50], 'Callback', @(src, event) updatePlot1(src, event, hLine, hLineEnv));
+
+for i = 1:length(dis)
+    dis{i} = ['Show Signal in Dis = ', num2str(dis{i}), 'cm'];
+end
+prompt{end} = 'Show Background Signal';
+
+popupmenu2 = uicontrol('Style', 'popupmenu', 'String', prompt, 'Position', [120, 20, 100, 50], 'Callback', @(src, event) updatePlot2(src, event, hLine, hLineEnv));
+
+for i = 1:length(dis)
+    prompt{i} = ['Hide Signal in Dis = ', num2str(dis{i}), 'cm'];
+end
+prompt{end} = 'Hide Background Signal';
+
+popupmenu3 = uicontrol('Style', 'popupmenu', 'String', prompt, 'Position', [220, 20, 100, 50], 'Callback', @(src, event) updatePlot3(src, event, hLine, hLineEnv));
 
 % make a button to delete all signal a mc_signal
 
