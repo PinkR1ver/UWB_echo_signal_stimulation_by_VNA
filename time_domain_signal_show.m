@@ -91,8 +91,6 @@ function updatePlot3(source, ~, hLine, hLineEnv)
 
     selectedCurve = get(source, 'Value');
 
-    set(hLine, 'Visible', 'on');
-
     for i = 1:length(hLineEnv)
         if i == selectedCurve
             set(hLineEnv{i}, 'Visible', 'off');
