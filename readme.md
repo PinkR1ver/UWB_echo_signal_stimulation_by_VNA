@@ -39,4 +39,4 @@ What we do:
 * time_domain_signal_show.m is the script to show the time domain signal.
 
 
-![all signal](./fig/all.png)
+![all signal](./range_detection/fig/all.png)
