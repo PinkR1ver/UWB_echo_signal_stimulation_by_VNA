@@ -39,4 +39,10 @@ What we do:
 * time_domain_signal_show.m is the script to show the time domain signal.
 
 
+#### Result
+
 ![all signal](./range_detection/fig/all.png)
+
+Range detection performance:
+![range detection](./range_detection/fig/range_detection_performance.jpeg)
+offset: 1.15%
