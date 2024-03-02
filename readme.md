@@ -47,3 +47,34 @@ Range detection performance:
 ![range detection](./range_detection/fig/range_detection_performance.jpeg)
 
 offset: 1.15%
+
+| Ground Truth - Distance (cm) | Predict Distance (cm) |
+|-----------------------------:|----------------------:|
+| 5.0                         | 5.26                  |
+| 8.0                         | 8.28                  |
+| 12.0                        | 11.44                 |
+| 16.0                        | 15.51                 |
+| 20.0                        | 19.08                 |
+| 24.0                        | 23.86                 |
+| 28.0                        | 27.98                 |
+| 32.0                        | 31.12                 |
+| 36.0                        | 35.99                 |
+| 40.0                        | 38.80                 |
+| 45.0                        | 45.70                 |
+| 50.0                        | 50.38                 |
+| 55.0                        | 55.39                 |
+| 60.0                        | 60.16                 |
+| 65.0                        | 65.72                 |
+| 70.0                        | 70.00                 |
+| 75.0                        | 75.13                 |
+| 80.0                        | 80.41                 |
+| 85.0                        | 84.97                 |
+| 90.0                        | 91.25                 |
+| 95.0                        | 94.80                 |
+
+System Delay $t_0$: 1.52e-09s
+Best offset in TrainSet: 1.84%
+Best offset in TestSet: 0.95%
+Best offset in AllSet: 1.62%
+
+Notice: Different system will have different system delay.

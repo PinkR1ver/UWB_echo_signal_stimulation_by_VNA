@@ -13,14 +13,14 @@ if __name__ == '__main__':
     data_path = os.path.join(base_path, 'signal', 'train.csv')
     
     dataset = pd.read_csv(data_path)
-    
+
     test_set_offset_global = []
     train_set_offset_global = []
     all_set_offset_global = []
     sample_global = []
     t0_predict_global = []
     
-    for i in track(range(100000), description='Training...'):
+    for i in track(range(1000), description='Training...'):
         
         train_set, test_set = train_test_split(dataset, test_size=0.2, random_state=random.randint(0, 100))
          
@@ -77,6 +77,38 @@ if __name__ == '__main__':
     predict_distance_list = []
     offset_list = []
     
+    for index, row in train_set.iterrows():
+        
+        predict_distance = (row['t2'] - t0) * 3e8 / 2 * 100
+        distance = row['distance']
+        offset = abs(distance - predict_distance) / distance
+        
+        distance_list.append(distance)
+        predict_distance_list.append(predict_distance)
+        offset_list.append(offset)
+        
+    print(f'Best offset in TrainSet: {np.mean(offset_list) * 100:.2f}%')
+    
+    distance_list = []
+    predict_distance_list = []
+    offset_list = []
+    
+    for index, row in test_set.iterrows():
+        
+        predict_distance = (row['t2'] - t0) * 3e8 / 2 * 100
+        distance = row['distance']
+        offset = abs(distance - predict_distance) / distance
+        
+        distance_list.append(distance)
+        predict_distance_list.append(predict_distance)
+        offset_list.append(offset)
+        
+    print(f'Best offset in TestSet: {np.mean(offset_list) * 100:.2f}%')
+    
+    distance_list = []
+    predict_distance_list = []
+    offset_list = []
+    
     for index, row in dataset.iterrows():
         
         predict_distance = (row['t2'] - t0) * 3e8 / 2 * 100
@@ -87,7 +119,7 @@ if __name__ == '__main__':
         predict_distance_list.append(predict_distance)
         offset_list.append(offset)
         
-    print(f'Average offset: {np.mean(offset_list) * 100:.2f}%')
+    print(f'Best offset in AllSet: {np.mean(offset_list) * 100:.2f}%')
         
     # plot distance and predict distance to see the difference
     plt.plot(distance_list, predict_distance_list, 'o')
@@ -96,6 +128,11 @@ if __name__ == '__main__':
     plt.ylabel('Predict Distance(cm)')
     plt.title('Predict Distance vs Distance')
     plt.show()
+    
+    for distance in distance_list:
+        
+        print(f'{distance} cm: {predict_distance_list[distance_list.index(distance)]:.2f} cm')
+
     
     # save t0
     t0_df = pd.DataFrame({'t0': [t0]})

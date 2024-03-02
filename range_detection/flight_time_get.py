@@ -22,7 +22,7 @@ if __name__ == '__main__':
     
     train_df = pd.DataFrame()
     
-    for i in range(5, len(signal_df.columns)):
+    for i in range(2, len(signal_df.columns)):
         
         distance = int(signal_df.columns[i])
         
