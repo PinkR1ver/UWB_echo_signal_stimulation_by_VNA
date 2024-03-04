@@ -133,7 +133,7 @@ end
 % plot 3D image, the +-0.5% of the max value isosurface
 
 figure
-isosurface(x_gird, y_gird, z_gird, image, max * 0.9995);
+isosurface(x_gird, y_gird, z_gird, image, -0.05);
 xlabel('X (m)');
 ylabel('Y (m)');
 zlabel('Z (m)');

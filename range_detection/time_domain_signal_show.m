@@ -9,7 +9,19 @@ mc_signal = signal(:,2); % get mutual coupling signal
 
 signal = signal(:, 3:end);
 
+t0 = readmatrix('./signal/t0.csv');
+t0_index = floor(t0 / (t(2) - t(1))) + 1;
+
 dis = {5, 8, 12, 16, 20, 24, 28, 32, 36, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95};
+
+anchor_offset = cell(length(dis), 1);
+anchor_offset_time = cell(length(dis), 1);
+[~, mc_signal_anchor] = max(mc_signal(1:t0_index));
+for i = 1:length(dis)
+    [~, signal_anchor] = max(signal(1:t0_index, i));
+    anchor_offset{i} = signal_anchor - mc_signal_anchor;
+    anchor_offset_time{i} = (signal_anchor - mc_signal_anchor) * (t(2) - t(1));
+end
 
 figure;
 
@@ -37,7 +49,29 @@ grid minor;
 
 % get a popupmenus to control which show, which not show
 
+anchor_offset_YData = cell(length(signal), 1);
+offset_YData = cell(length(signal), 1);
+original_YData = cell(length(signal), 1);
 
+for i = 1:length(dis)
+    if anchor_offset{i} > 0
+        mc_signal_offset = zeros(1, length(hLine.YData));
+        mc_signal_offset(anchor_offset{i} + 1:end) = hLine.YData(anchor_offset{i} + 1:end);
+        anchor_offset_YData{i} = hLineEnv{i}.YData - mc_signal_offset;
+    else
+        mc_signal_offset = zeros(1, length(hLine.YData));
+        mc_signal_offset(1:end + anchor_offset{i}) = hLine.YData(-anchor_offset{i} + 1:end);
+        anchor_offset_YData{i} = hLineEnv{i}.YData - mc_signal_offset;
+    end 
+end
+
+for i = 1:length(dis)
+    offset_YData{i} = hLineEnv{i}.YData - hLine.YData;
+end
+
+for i = 1:length(dis)
+    original_YData{i} = hLineEnv{i}.YData;
+end
 
 prompt = dis;
 for i = 1:length(dis)
@@ -63,7 +97,8 @@ popupmenu3 = uicontrol('Style', 'popupmenu', 'String', prompt, 'Position', [220,
 
 % make a button to delete all signal a mc_signal
 
-button = uicontrol('Style', 'pushbutton', 'String', 'Delete Background', 'Position', [320, 20, 100, 50], 'Callback', @(src, event) deleteBackgroundNoise(src, event, hLine, hLineEnv));
+button = uicontrol('Style', 'pushbutton', 'String', 'Delete Background', 'Position', [320, 20, 100, 50], 'Callback', @(src, event) deleteBackgroundNoise(src, event, hLine, hLineEnv, offset_YData, original_YData));
+button2 = uicontrol('Style', 'pushbutton', 'String', 'Delete Background with Anchor', 'Position', [420, 20, 100, 50], 'Callback', @(src, event) deleteBackgroundNoise_Anchor(src, event, hLine, hLineEnv, anchor_offset_YData, original_YData));
 
 function updatePlot1(source, ~, hLine, hLineEnv)
 
@@ -118,7 +153,37 @@ function updatePlot3(source, ~, hLine, hLineEnv)
 end
 
 
-function deleteBackgroundNoise(~, ~, hLine, hLineEnv)
+function deleteBackgroundNoise_Anchor(~, ~, ~, hLineEnv, anchor_offset_YData, original_YData)
+
+    persistent flag;
+
+    if isempty(flag)
+        flag = 1;
+    end
+
+    if flag
+
+        for i = 1:length(hLineEnv)
+            set(hLineEnv{i}, 'YData', anchor_offset_YData{i})
+        end
+
+        flag = 0;
+
+    else
+
+        for i = 1:length(hLineEnv)
+            set(hLineEnv{i}, 'YData', original_YData{i})
+        end
+
+        flag = 1;
+
+    end
+
+
+end
+
+
+function deleteBackgroundNoise(~, ~, ~, hLineEnv, offset_YData, original_YData)
 
     persistent flag;
 
@@ -130,7 +195,7 @@ function deleteBackgroundNoise(~, ~, hLine, hLineEnv)
 
         % delete signal a hLine
         for i = 1:length(hLineEnv)
-            set(hLineEnv{i}, 'YData', hLineEnv{i}.YData - hLine.YData)
+            set(hLineEnv{i}, 'YData', offset_YData{i})
         end
 
         flag = 0;
@@ -139,7 +204,7 @@ function deleteBackgroundNoise(~, ~, hLine, hLineEnv)
 
         % delete signal a hLine
         for i = 1:length(hLineEnv)
-            set(hLineEnv{i}, 'YData', hLineEnv{i}.YData + hLine.YData)
+            set(hLineEnv{i}, 'YData', original_YData{i})
         end
 
         flag = 1;
