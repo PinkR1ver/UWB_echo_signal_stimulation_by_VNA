@@ -3,16 +3,16 @@ clear all;clc;close all;
 file_path = './signal/signal.xlsx';
 signal = readmatrix(file_path);
 
+dis = signal(1, 3:end); % get distance
+dis = num2cell(dis);
+
 signal = signal(2:end,:); % delete first row
 t = signal(:, 1); % get t
 mc_signal = signal(:,2); % get mutual coupling signal
 
 signal = signal(:, 3:end);
 
-t0 = readmatrix('./signal/t0.csv');
-t0_index = floor(t0 / (t(2) - t(1))) + 1;
-
-dis = {5, 8, 12, 16, 20, 24, 28, 32, 36, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95};
+[~, t0_index] = max(mc_signal);
 
 anchor_offset = cell(length(dis), 1);
 anchor_offset_time = cell(length(dis), 1);
